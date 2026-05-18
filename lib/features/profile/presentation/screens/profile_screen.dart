@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../../../../app/theme/app_colors.dart';
@@ -53,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => context.push('/login'),
                       icon: const Icon(Iconsax.login, size: 20),
                       label: const Text('Iniciar Sesión'),
                     ),
@@ -62,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      onPressed: () {},
+                      onPressed: () => context.push('/register'),
                       icon: const Icon(Iconsax.user_add, size: 20),
                       label: const Text('Crear Cuenta'),
                     ),
