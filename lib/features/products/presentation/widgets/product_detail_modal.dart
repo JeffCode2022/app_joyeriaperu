@@ -25,6 +25,7 @@ class ProductDetailModal extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailModalState extends ConsumerState<ProductDetailModal> {
+  late Product _activeProduct;
   late Map<String, String> _selectedOptions;
   int _currentImageIndex = 0;
   int _quantity = 1;
@@ -32,15 +33,32 @@ class _ProductDetailModalState extends ConsumerState<ProductDetailModal> {
   @override
   void initState() {
     super.initState();
-    // Initialize with first value of each option
+    _activeProduct = widget.product;
+    _initProduct(_activeProduct);
+  }
+
+  void _initProduct(Product product) {
     _selectedOptions = {
-      for (final opt in widget.product.options) opt.label: opt.values.first,
+      for (final opt in product.options) opt.label: opt.values.first,
     };
+    _currentImageIndex = 0;
+    _quantity = 1;
+  }
+
+  @override
+  void didUpdateWidget(ProductDetailModal oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.product.id != widget.product.id) {
+      setState(() {
+        _activeProduct = widget.product;
+        _initProduct(_activeProduct);
+      });
+    }
   }
 
   double get _calculatedPrice {
-    double price = widget.product.promoPrice ?? widget.product.price;
-    for (final opt in widget.product.options) {
+    double price = _activeProduct.promoPrice ?? _activeProduct.price;
+    for (final opt in _activeProduct.options) {
       if (opt.priceModifiers != null) {
         final selected = _selectedOptions[opt.label];
         if (selected != null && opt.priceModifiers!.containsKey(selected)) {
@@ -53,17 +71,25 @@ class _ProductDetailModalState extends ConsumerState<ProductDetailModal> {
 
   @override
   Widget build(BuildContext context) {
-    final product = widget.product;
+    final product = _activeProduct;
     final isFav = ref.watch(isFavoriteProvider(product.id));
     final recommendations = ref.watch(recommendationsProvider(product.id));
 
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.92,
-      decoration: const BoxDecoration(
-        color: AppColors.pearl,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      child: Column(
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.92,
+          decoration: BoxDecoration(
+            color: AppColors.pearl.withValues(alpha: 0.75),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+            border: Border.all(
+              color: AppColors.white.withValues(alpha: 0.3),
+              width: 1.5,
+            ),
+          ),
+          child: Column(
         children: [
           // ── Drag Handle ──
           Center(
@@ -323,14 +349,20 @@ class _ProductDetailModalState extends ConsumerState<ProductDetailModal> {
                               final rec = recommendations[i];
                               return GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (_) =>
-                                        ProductDetailModal(product: rec),
-                                  );
+                                  setState(() {
+                                    _activeProduct = rec;
+                                    _initProduct(rec);
+                                  });
+                                  try {
+                                    final scrollController = PrimaryScrollController.of(context);
+                                    if (scrollController.hasClients) {
+                                      scrollController.animateTo(
+                                        0,
+                                        duration: const Duration(milliseconds: 300),
+                                        curve: Curves.easeOut,
+                                      );
+                                    }
+                                  } catch (_) {}
                                 },
                                 child: SizedBox(
                                   width: 110,
@@ -383,11 +415,17 @@ class _ProductDetailModalState extends ConsumerState<ProductDetailModal> {
           Container(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: AppColors.pearl.withValues(alpha: 0.6),
+              border: const Border(
+                top: BorderSide(
+                  color: AppColors.glassBorder,
+                  width: 1.5,
+                ),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.glassShadow.withValues(alpha: 0.05),
-                  blurRadius: 20,
+                  color: AppColors.glassShadow.withValues(alpha: 0.03),
+                  blurRadius: 16,
                   offset: const Offset(0, -4),
                 ),
               ],
@@ -467,7 +505,7 @@ class _ProductDetailModalState extends ConsumerState<ProductDetailModal> {
           ),
         ],
       ),
-    );
+    ),),);
   }
 }
 

@@ -12,6 +12,7 @@ import 'package:luxe_joyas/features/products/domain/entities/product.dart';
 import 'package:luxe_joyas/features/products/presentation/providers/product_providers.dart';
 import 'package:luxe_joyas/features/products/presentation/widgets/product_card.dart';
 import 'package:luxe_joyas/features/products/presentation/widgets/product_detail_modal.dart';
+import '../widgets/auto_carousel_banner.dart';
 
 /// Home screen with categories, featured products, and promos.
 class HomeScreen extends ConsumerWidget {
@@ -132,59 +133,11 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
 
-          // ── Featured Banner ──
-          SliverToBoxAdapter(
+          // ── Featured Banner Carousel ──
+          const SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 8),
-              child: Container(
-                height: 140,
-                decoration: BoxDecoration(
-                  gradient: AppColors.goldGradient,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Colección\nPrimavera 2026',
-                            style: AppTypography.headlineLarge.copyWith(
-                              color: AppColors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.white.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              'Hasta 30% OFF',
-                              style: AppTypography.labelMedium.copyWith(
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Iconsax.diamonds,
-                      size: 64,
-                      color: Colors.white24,
-                    ),
-                  ],
-                ),
-              ).animate().fadeIn(duration: 500.ms).slideX(begin: 0.05),
+              padding: EdgeInsets.only(top: 12, bottom: 8),
+              child: AutoCarouselBanner(),
             ),
           ),
 

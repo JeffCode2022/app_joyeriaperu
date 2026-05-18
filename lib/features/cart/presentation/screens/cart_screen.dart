@@ -297,20 +297,20 @@ class CartScreen extends ConsumerWidget {
   void _showClearDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dialogContext) => AlertDialog(
         title: const Text('¿Vaciar carrito?'),
         content: const Text(
           'Se eliminarán todos los productos de tu carrito.',
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancelar'),
           ),
           TextButton(
             onPressed: () {
               ref.read(cartProvider.notifier).clearCart();
-              Navigator.pop(context);
+              Navigator.pop(dialogContext);
             },
             child: Text(
               'Vaciar',
