@@ -5,7 +5,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 
-/// Premium glassmorphism register screen with Liquid-Glass design.
+/// Premium glassmorphism register screen with Light Jewelry background.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -34,61 +34,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. Deep Metallic Background
-          Container(color: const Color(0xFF121214)),
-
-          // 2. Glowing Liquid Blobs
-          Positioned(
-            top: -80,
-            right: -80,
-            child: Container(
-              width: 280,
-              height: 280,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [AppColors.goldLight, AppColors.gold, Colors.transparent],
-                ),
-              ),
+          // 1. Full Screen Jewelry Background (Light & Crisp)
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/pearls_set.png',
+              fit: BoxFit.cover,
             ),
           ),
-          Positioned(
-            bottom: -60,
-            left: -60,
+
+          // 2. Translucent Light-Pearl Overlay
+          Positioned.fill(
             child: Container(
-              width: 300,
-              height: 300,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [Color(0xFFE8C5C8), AppColors.roseGold, Colors.transparent],
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.pearl.withValues(alpha: 0.8),
+                    AppColors.pearl.withValues(alpha: 0.9),
+                  ],
                 ),
               ),
             ),
           ),
 
-          // 3. Frosted Glass Register Panel
+          // 3. Main Frosted Glass Card
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
                     decoration: BoxDecoration(
-                      color: AppColors.white.withValues(alpha: 0.1),
+                      color: AppColors.white.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
-                        color: AppColors.white.withValues(alpha: 0.2),
+                        color: AppColors.white.withValues(alpha: 0.5),
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.3),
-                          blurRadius: 30,
-                          offset: const Offset(0, 15),
+                          color: AppColors.glassShadow.withValues(alpha: 0.05),
+                          blurRadius: 25,
+                          offset: const Offset(0, 10),
                         ),
                       ],
                     ),
@@ -101,7 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Icon(
                             Iconsax.user_add,
                             size: 48,
-                            color: AppColors.gold,
+                            color: AppColors.goldDark,
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -109,7 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Text(
                             'Crear Cuenta',
                             style: AppTypography.headlineLarge.copyWith(
-                              color: AppColors.white,
+                              color: AppColors.charcoal,
                               fontSize: 26,
                               fontWeight: FontWeight.w900,
                             ),
@@ -120,13 +111,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: Text(
                             'Únete a la experiencia de lujo',
                             style: AppTypography.labelMedium.copyWith(
-                              color: AppColors.mediumGrey,
+                              color: AppColors.charcoal.withValues(alpha: 0.6),
                             ),
                           ),
                         ),
                         const SizedBox(height: 28),
 
-                        // Full Name Input
+                        // Full Name Input (Glass Light)
                         _buildGlassTextField(
                           controller: _nameController,
                           hintText: 'Nombre completo',
@@ -134,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Email Input
+                        // Email Input (Glass Light)
                         _buildGlassTextField(
                           controller: _emailController,
                           hintText: 'Correo electrónico',
@@ -143,7 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Password Input
+                        // Password Input (Glass Light)
                         _buildGlassTextField(
                           controller: _passwordController,
                           hintText: 'Contraseña',
@@ -152,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword ? Iconsax.eye : Iconsax.eye_slash,
-                              color: AppColors.mediumGrey,
+                              color: AppColors.charcoal.withValues(alpha: 0.5),
                               size: 20,
                             ),
                             onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
@@ -160,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
 
-                        // Confirm Password Input
+                        // Confirm Password Input (Glass Light)
                         _buildGlassTextField(
                           controller: _confirmPasswordController,
                           hintText: 'Confirmar contraseña',
@@ -169,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 28),
 
-                        // Register CTA Button
+                        // Register CTA Button (Gold Liquid)
                         Container(
                           height: 52,
                           decoration: BoxDecoration(
@@ -212,7 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             Text(
                               '¿Ya tienes cuenta? ',
                               style: AppTypography.labelMedium.copyWith(
-                                color: AppColors.white.withValues(alpha: 0.7),
+                                color: AppColors.charcoal.withValues(alpha: 0.7),
                               ),
                             ),
                             GestureDetector(
@@ -220,7 +211,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               child: Text(
                                 'Inicia Sesión',
                                 style: AppTypography.labelMedium.copyWith(
-                                  color: AppColors.goldLight,
+                                  color: AppColors.goldDark,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -250,21 +241,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Container(
       height: 52,
       decoration: BoxDecoration(
-        color: AppColors.white.withValues(alpha: 0.08),
+        color: AppColors.white.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.white.withValues(alpha: 0.15),
+          color: AppColors.white.withValues(alpha: 0.8),
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: TextField(
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,
-        style: const TextStyle(color: AppColors.white, fontSize: 14),
+        style: const TextStyle(color: AppColors.charcoal, fontSize: 14),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: AppColors.mediumGrey, fontSize: 14),
-          prefixIcon: Icon(icon, color: AppColors.mediumGrey, size: 20),
+          hintStyle: TextStyle(color: AppColors.charcoal.withValues(alpha: 0.5), fontSize: 14),
+          prefixIcon: Icon(icon, color: AppColors.charcoal.withValues(alpha: 0.6), size: 20),
           suffixIcon: suffixIcon,
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
